@@ -1,0 +1,32 @@
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: auto;
+  max-width: 880px;
+  width: 100%;
+}
+
+.footer__copyright {
+  margin: 67px auto 60px 0px;
+
+  font-family: "InterDisplay", Arial, Helvetica, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 5px;
+  text-align: start;
+  color: #545454;
+}
+
+@media screen and (max-width: 767px) {
+  .footer {
+    max-width: 282px;
+  }
+
+  .footer__copyright {
+    margin: 50px auto 36px 0px;
+
+    font-size: 14px;
+  }
+}
