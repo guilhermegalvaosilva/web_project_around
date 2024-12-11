@@ -1,0 +1,42 @@
+.header {
+  display: flex;
+  width:100%;
+  flex-direction: column;
+}
+.header__line{
+  display: flex;
+  border-bottom: 1px solid #545454;
+  margin-bottom: 40px;
+  opacity: 70%;
+  width: 100%;
+}
+.header__logo{
+  width: 173px;
+  height: 33px;
+  margin-bottom: 40px;
+}
+
+@media screen and (max-width:1145px) {
+  .header{
+    display: flex;
+    width: 100%;
+  }
+  .header__line{
+    display: flex;
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 880px) {
+  
+  .header{
+    display: flex;
+    width: 100%;
+   
+  }
+  .header__line{
+    display: flex;
+    width: 100%;
+  }
+  
+}

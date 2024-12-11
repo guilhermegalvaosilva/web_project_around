@@ -1,0 +1,111 @@
+.gallery{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    
+}
+.gallery__elements{
+    display: grid;
+    list-style-type: none;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 17px;
+    row-gap: 17px;
+    padding: 0;
+}
+.gallery__element{
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    border-radius: 10px 10px 10px 10px;
+    overflow: hidden;
+    width: 282px;
+    height: 354px;
+}
+.gallery__card{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #fff;
+    color:black;
+    border-radius: 0px 0px 10px 10px;
+    margin: 0;
+    
+}
+.gallery__title {
+    
+    font-family: 'Inter';
+    text-overflow: ellipsis;
+    white-space: nowrap; 
+    overflow: hidden;
+    font-size: 1.3em;
+    font-weight: 900;
+    line-height: 29.05px;
+    width: 50%;
+    height: 29px;
+    margin-left: 12px;
+    
+}
+
+.gallery__img{
+    width: 100%;
+    height: 290px;
+    object-fit: cover;
+    cursor: pointer;
+}
+.gallery__lixeira{
+    display:flex;
+    position:absolute;
+    cursor: pointer;
+    top: 18px;
+    right: 12px;
+    transition: 0.2s;
+}
+.gallery__lixeira:hover{
+    transform: scale(1.2);
+    opacity: 60%;
+    
+}
+.gallery__like{
+    cursor: pointer;
+    border: none;
+    transition: 0.3s;
+}
+.gallery__like:hover{
+    transform: scale(1.3);
+}
+.gallery__like-click{
+    background-image:url(../image/Unions2black.png);
+}
+
+@media screen and (max-width:1145px) {
+    .gallery{
+        display: flex;
+        width: 100%;
+    }
+    .gallery__elements{
+        display: grid;
+        justify-content: center;
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .gallery__element{
+       display:flex;
+       margin: 0;
+    }
+}
+
+@media screen and (max-width: 880px) {
+    .gallery{
+        display: flex;
+        margin: 0 0 50px 0;
+    }
+    .gallery__elements{
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        margin:0;
+    }
+    .gallery__element{
+        display: flex;
+        
+    }
+}

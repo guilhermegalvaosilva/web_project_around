@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="Guilherme">
+        <meta name="viewport" content="width=device-width, initial-scale=1" >
+        <meta name="description" content="este esta cendo o meu 4 projeto no curso web" >
+        <title>Around the U.S.</title>
+        <link rel="stylesheet" href="./pages/index.css" >
+        <link rel="stylesheet" href="favicon.ico" >
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    </head>
+    <body class="page">
+        <header class="header">
+            <img src="./image/VectorlogoAround.png" alt="logo da magina" class="header__logo">
+            <div class="header__line">
+            </div>
+        </header>
+        <main class="main">
+            <section class="profile">
+                <div class="profile__new">
+                    <img src="./image/imageperfil02.png" alt="foto-avatar" class="profile__avatar">
+                    <div class="profile__edit">
+                        <div class="profile__avatar-name">
+                            <h1 class="profile__title">Jacques Cousteau</h1>
+                            <img type="button" src="./image/EditButtoncaixaidt.png" alt="btn-edit" class="profile__edit-avatar">
+                        </div>
+                        <h2 class="profile__subtitle">Explorador</h2>
+                    </div>
+                    <img src="./image/AddButtoncaixa+.png" alt="btn-adicionar" class="profile__add" id="openTwoButton">
+                </div>
+            </section>
+            <section class="gallery">
+                <ul class="gallery__elements">
+
+                </ul>
+            </section>
+        </main>
+        <footer class="footer">
+            <div class="footer__copyright">
+                <p class="footer__copy">&copy;2024 Around the U.S.</p>
+            </div>
+        </footer>
+    </body>
+    <template id="template">
+        <li class="gallery__element">
+            <img type="button" src = "image/Groupl1xe1ra.png" alt="lixeira" class="gallery__lixeira">
+            <img type="button" src="" alt="" class="gallery__img">
+            <div class="gallery__card">
+                <h2 class="gallery__title">vale de Yosemite</h2>
+                <img src="./image/Vector-like.png" alt="like" class="gallery__like">
+            </div>
+        </li>
+    </template>
+    <div class="popup" id="popupOne">
+        <div class="popup__overlay ">
+            <img type="button" src="./image/CloseIconclosde.png" alt="closeButton" id="close-one" class="popup__close">
+            <form class="popup__form" id="popup__form" name="formName">
+                <h2 class="popup__title">Editar perfil</h2>
+                <input id="name" type="text" class="popup__input"  placeholder="Name" minlength="2" maxlength="40" autocomplete="username" required>
+                <span class="popup__input_error name-error"></span>
+                <input id="job" type="text" class="popup__input "  placeholder="about me" minlength="2" maxlength="200" autocomplete="username" required>
+                <span class="popup__input_error job-error"></span>
+                <button disabled type="submit" class="popup__submit" id="savebutton">Salvar</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="popup" id="popupTow">
+        <div class="popup__overlay">
+            <img type="button" src="./image/CloseIconclosde.png" alt="closeButton" id="close-two" class="popup__close">
+            <form class="popup__form" id="form-addCard" name="formAdd">
+                <h2 class="popup__title">Novo local</h2>
+                <input id="title" type="text" class="popup__input"  placeholder="Title" minlength="2" maxlength="40" autocomplete="text" required>
+                <span class="popup__input_error title-error"></span>
+                <input id="link" type="url" class="popup__input"  placeholder="Link the imagen" minlength="2" maxlength="200" autocomplete="url" required>
+                <span class="popup__input_error link-error"></span>
+                <button disabled type="submit" class="popup__submit" id="create">Criar</button>
+            </form>
+        </div>
+    </div>
+    <div class="popup" id="image-viewer">
+        <div class="popup__overlay ">
+            <img src="./image/CloseIconclosde.png" alt="closeButton" id="close-image" class="popup__close">
+            <img src="" alt="" class="popup__image">
+            <h2 class="popup__image-title"></h2>
+        </div>
+    </div>
+    <script src="./js/index.js"></script>
+  </html>
