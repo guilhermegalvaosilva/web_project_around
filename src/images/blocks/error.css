@@ -1,0 +1,18 @@
+.error__message {
+  font-family: "Inter", Arial, sans-serif;
+  max-width: 358px;
+    color: #ff0000;
+    font-size: 12px;
+    display: block;
+    font-weight: 400;
+    line-height: 14.52px;
+    text-align: left;
+}
+
+.error__button {
+  color: #b8b8b8;
+  background-color: rgb(255, 255, 255);
+  border: 1px solid #b8b8b8;
+  cursor: not-allowed;
+}
+

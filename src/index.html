@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Projeto Around da TripleTen" />
+    <meta name="keywords" content="html, css, javascript" />
+    <meta name="author" content="Guilherme Galvão" />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="stylesheet" href="./pages/index.css" />
+    <title>Around the US</title>
+  </head>
+
+  <!-- ------------------------------------- HEADER CONTENT ----------------------------------------- -->
+
+  <body>
+    <header class="header">
+      <div class="header__content">
+        <img
+          class="header__logo"
+          src="./images/Vector.svg"
+          alt="escrita Around The U.S."
+        />
+      </div>
+      <hr class="header__line" />
+    </header>
+
+    <!-- ------------------------------------- MAIN CONTENT ----------------------------------------- -->
+
+    <main class="content">
+      <div class="content__profile">
+        <div class="content__profile-wrapper">
+          <img
+            class="content__profile-image"
+            src="./images/profileimage.jpg"
+            alt="Senhor de cabelos brancos sorrindo, ele veste um gorro vermelho e camiseta azul, ao fundo é possível ver o mar levemente desfocado"
+          />
+          <button class="content__editbtn">
+            <img
+              class="content__edit-icon"
+              src="./images/IconeCanetaEditor.svg"
+              alt="ícone de edição"
+            />
+          </button>
+        </div>
+        <div class="content__text">
+          <div class="content__text-square">
+            <h1 class="content__text-name">Jacques Cousteau</h1>
+            <button class="content__button">
+              <img
+                class="content__button-icon"
+                src="./images/IconeCanetaVector.svg"
+                alt="lápis branco"
+              />
+            </button>
+          </div>
+          <p class="content__text-description">Explorador</p>
+        </div>
+        <button class="content__addbutton">
+          <img
+            class="content__addbutton-icon"
+            src="./images/IconeAddButton.svg"
+            alt="sinal de mais"
+          />
+        </button>
+      </div>
+
+      <!-- ------------------------------------- CARDS ----------------------------------------- -->
+
+      <ul class="cards-list"></ul>
+
+      <!-- ------------------------------------- FOOTER CONTENT ----------------------------------------- -->
+
+      <footer class="footer">© 2024 Around The U.S.</footer>
+    </main>
+
+    <!-- ------------------------------------- POP UP EDIT PROFILE ----------------------------------------- -->
+
+    <div class="popup">
+      <div class="popup__overlay">
+        <button class="popup__close-button">
+          <img
+            class="popup__icon"
+            src="./images/CloseIcon.svg"
+            alt="duas retas cruzadas na diagonal formando a letra X"
+          />
+        </button>
+        <h3 class="popup__title">Editar Perfil</h3>
+        <form id="user-form" class="popup__form" name="popup-form" novalidate>
+          <div class="popup__target">
+            <input
+              id="name"
+              required
+              maxlength="40"
+              minlength="2"
+              class="popup__input popup__input-error"
+              type="text"
+              placeholder="Nome"
+            />
+            <span class="error__message" id="name-error"></span>
+          </div>
+          <div class="popup__target">
+            <input
+              id="about"
+              required
+              maxlength="200"
+              minlength="2"
+              class="popup__input popup__input-error"
+              type="text"
+              placeholder="Sobre mim"
+            />
+            <span class="error__message" id="about-error"></span>
+          </div>
+          <button
+            class="popup__save-button error__button"
+            type="submit"
+            disabled="true"
+          >
+            Salvar
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ------------------------------------- ADD CARDS (POPUP) ----------------------------------------- -->
+
+    <div class="addcard">
+      <div class="addcard__overlay">
+        <button class="addcard__close-button">
+          <img
+            class="addcard__close-icon"
+            src="./images/CloseIcon.svg"
+            alt="duas retas cruzadas na diagonal formando a letra X"
+          />
+        </button>
+        <h3 class="addcard__title">Novo Local</h3>
+        <form
+          id="card-form"
+          class="addcard__form"
+          name="addcard-form"
+          novalidate
+        >
+          <div class="addcard__target">
+            <input
+              id="local"
+              required
+              maxlength="30"
+              minlength="2"
+              class="addcard__input popup__input-error"
+              type="text"
+              placeholder="Título"
+            />
+            <span class="error__message" id="local-error"></span>
+          </div>
+          <div class="addcard__target">
+            <input
+              id="link"
+              required
+              class="addcard__input popup__input-error"
+              type="url"
+              placeholder="Link de imagem"
+            />
+            <span class="error__message" id="link-error"></span>
+          </div>
+          <button
+            class="addcard__button error__button"
+            type="submit"
+            disabled="true"
+          >
+            Criar
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ------------------------------------- IMAGES (POPUP) ----------------------------------------- -->
+
+    <div class="imagepopup">
+      <div class="imagepopup__overlay">
+        <button class="imagepopup__close-button">
+          <img
+            class="imagepopup__close-icon"
+            src="./images/CloseIcon.svg"
+            alt="duas retas cruzadas na diagonal formando a letra X"
+          />
+        </button>
+        <img class="imagepopup__image" />
+        <p class="imagepopup__title">Local Aqui</p>
+      </div>
+    </div>
+
+    <!-------------------------------------------POPUP CONFIRMATION DELETE------------------------>
+    <div class="popupconfirmation">
+      <div class="popupconfirmation__overlay">
+        <button class="popupconfirmation__close-button">
+          <img
+            class="popupconfirmation__icon"
+            src="./images/CloseIcon.svg"
+            alt="duas retas cruzadas na diagonal formando a letra X"
+          />
+        </button>
+        <div class="popupconfirmation__content">
+          <h4 class="popupconfirmation__title">Tem certeza?</h4>
+          <button class="popupconfirmation__button" type="submit">Sim</button>
+        </div>
+      </div>
+    </div>
+
+    <!--------------------------------- POPUP CHANGE PROFILE PICTURE------------------------>
+
+    <div class="popupprofilepicture">
+      <div class="popupprofilepicture__overlay">
+        <button class="popupprofilepicture__close-button">
+          <img
+            class="popupprofilepicture__icon"
+            src="./images/CloseIcon.svg"
+            alt="duas retas cruzadas na diagonal formando a letra X"
+          />
+        </button>
+        <div class="popupprofilepicture__content">
+          <h5 class="popupprofilepicture__title">Alterar a foto do perfil</h5>
+          <form
+            id="popupprofilepicture-form"
+            class="popupprofilepicture__form"
+            name="popupprofilepicture-form"
+            novalidate
+          >
+            <div class="popupprofilepicture__target">
+              <input
+                id="linkprofile-picture"
+                required
+                class="popupprofilepicture__input popupprofilepicture__input-error"
+                type="url"
+                placeholder="Insira um link de imagem aqui"
+              />
+              <span class="error__message" id="local-error"></span>
+            </div>
+            <button
+              class="popupprofilepicture__button error__button"
+              type="submit"
+            >
+              Salvar
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- ------------------------------------- TEMPLATE CARD ----------------------------------------- -->
+
+    <template id="card-template">
+      <li class="card__content">
+        <img class="card__image" src="" alt="" />
+        <img
+          class="card__trash-icon"
+          src="./images/Trash.svg"
+          alt="ícone de lixeira"
+        />
+        <div class="card__info">
+          <p class="card__info-title">Vale de Yosemite</p>
+          <img
+            class="card__info-icon"
+            src="./images/Vectorheart.svg"
+            alt="coração vazado com borda preta"
+          />
+        </div>
+      </li>
+    </template>
+
+    <script type="module" src="./scripts/index.js"></script>
+  </body>
+</html>
