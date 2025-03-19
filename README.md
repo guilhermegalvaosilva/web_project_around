@@ -58,5 +58,5 @@ Uma página interativa que celebra lugares ao redor dos EUA, permitindo que os u
 
 1. **Clone o Repositório**
    ```bash
-   https://github.com/guilhermegalvaosilva/web_project_around
+   git@github.com:guilhermegalvaosilva/web_project_around.git
    ```
