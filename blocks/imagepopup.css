@@ -1,0 +1,83 @@
+.imagepopup{
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.8);
+  position: fixed;
+  top: 0;
+  display: none;
+}
+
+.imagepopup__overlay{
+  margin: 90px auto 0;
+  box-shadow: 0px 0px 25px 0px #00000026;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.imagepopup__close-button{
+  max-width: 40px;
+  height: 40px;
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  border: none;
+  background-color: black;
+}
+
+.imagepopup__close-icon {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.imagepopup__title {
+  max-width: 291px;
+  margin-top: 10px;
+  font-family: "Inter", Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 14.52px;
+  text-align: left;
+  color: #ffffff;
+}
+
+.imagepopup__image{
+  max-width: 75vw;
+  max-height: 75vh;
+}
+
+.imagepopup_opened {
+  display: flex;
+  z-index: 2;
+}
+
+/* -----------------------------------------MODO TABLET------------------------------------ */
+
+@media screen and (max-width: 880px) {
+  .imagepopup__close-button {
+    max-width: 30px;
+    height: 30px;
+  }
+
+  .imagepopup__close-icon {
+    max-width: 30px;
+    height: 30px;
+  }
+}
+
+/* ----------------------------------------- MODO CELULAR ------------------------------------ */
+
+@media screen and (max-width: 680px) {
+  .imagepopup__close-button {
+    max-width: 26px;
+    height: 26px;
+    top: -35px;
+    right: 0px;
+  }
+
+  .imagepopup__close-icon {
+    max-width: 26px;
+    height: 26px;
+  }
+}
