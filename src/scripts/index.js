@@ -33,7 +33,7 @@ import {
   profileImage,
   inputField,
   saveProfileButton,
-} from "./utils.js"
+} from "./utils.js";
 
 //------------ Instância de Api --------------
 
@@ -41,36 +41,30 @@ const apiInst = new Api({
   baseUrl: " https://around-api.pt-br.tripleten-services.com/v1/",
   headers: {
     authorization: "b07f02e0-50c4-4483-bd43-c32bc68c8be9",
-    "Content-Type": "application/json"
-  }
-})
+    "Content-Type": "application/json",
+  },
+});
 
 //----------Informações do Usuário ------------
 
 const userInfo = new Userinfo({
   name: ".content__text-name",
   about: ".content__text-description",
-  avatar: ".content__profile-image"
-})
+  avatar: ".content__profile-image",
+});
 
 //----------- Api do Usuário -------------------
 
-apiInst.getUsersInfo().then(res => {
-  if (res.status !== 200) { //se for diferente de 200 retorna com erro
-    return Promise.reject("Deu erro no get users!")
-  }
-  return res.json()
-})
-  .then(users => {
-    const owner = users.find(user => user._id == ownerId) //verifica se sou o usuário criador
-    if (!owner) {
-      throw new Error("Seu usuário não foi encontrado!");
-    }
-    userInfo.setUserInfo(owner.name, owner.about, owner.avatar);
+apiInst
+  .getUserInfo()
+  .then((user) => {
+    userInfo.setUserInfo({
+      name: user.name,
+      about: user.about,
+      avatar: user.avatar,
+    });
   })
-  .catch(error => {
-    console.log(`[GET] - /users - ${error}`);
-  });
+  .catch((error) => console.error(`Erro ao carregar usuário: ${error}`));
 
 //------------- Remove o Popup de Imagem ----------------
 
@@ -78,17 +72,17 @@ imagePopupCloseButton.addEventListener("click", () => {
   imagePopup.classList.remove("imagepopup_opened");
 });
 
-closeButton.addEventListener("click", () => popup.classList.remove("popup_opened")); //Remove o Popup
+closeButton.addEventListener("click", () =>
+  popup.classList.remove("popup_opened")
+); //Remove o Popup
 
 saveButton.classList.toggle("error__button", saveButton.disabled); //Desabilita o botão
-
 
 //---- Curtir e Descurtir o Card -------
 
 function handleLike(cardId, isLiked) {
   if (!isLiked) {
     return apiInst.updateLike(cardId);
-
   }
 
   return apiInst.removeLike(cardId);
@@ -96,33 +90,38 @@ function handleLike(cardId, isLiked) {
 
 // ------------- Api deletar o cartão do idUser ------------
 
-function deleteCard(card) {
+function handleDeleteCard(card, cardElement) {
   if (card.owner !== ownerId) {
-  } if (trashIcon) {
-    document.querySelector(".card__trash-icon").remove;
+    console.log("Você não tem permissão para excluir este card.");
+    return;
   }
 
-  const cardId = card._id
+  const cardId = card._id;
 
-  apiInst.deleteCard(cardId).then(res => {
-    if (res.status !== 204) {
-      return Promise.reject(`Erro no delete do id: ${cardId}`)
-    }
-  }).catch(error => {
-    console.log(`[DELETE] - /cards - ${error}`);
-  })
+  apiInst
+    .deleteCard(cardId)
+    .then((res) => {
+      if (res.status !== 204) {
+        return Promise.reject(`Erro no delete do id: ${cardId}`);
+      }
+
+      cardElement.remove();
+    })
+    .catch((error) => {
+      console.log(`[DELETE] - /cards - ${error}`);
+    });
 }
 
-let section
+let section;
 
 function showItens(card) {
-  console.log(card)
+  console.log(card);
   const newCard = new Card({
     card: card,
     templateCard: "#card-template",
     handleCardClick: "handleCardClick",
     handleImageClick: clickImage,
-    handleLike
+    handleLike,
   });
   cardList.appendChild(newCard.createCard());
 }
@@ -133,58 +132,59 @@ function clickImage(card) {
   popupWithImage.open(card);
 }
 
-
-
 // ------------- API dos Cards Iniciais ------------------
 
-apiInst.getInitialCards()
-  .then(res => {
+apiInst
+  .getInitialCards()
+  .then((res) => {
     if (res.status !== 200) {
-      return Promise.reject("Deu erro no get cards!")
+      return Promise.reject("Deu erro no get cards!");
     }
-    return res.json()
+    return res.json();
   })
-  .then(card => {
-
-    section = new Section({
-      items: card,
-      renderer: showItens
-    }, ".cards-list");
+  .then((card) => {
+    section = new Section(
+      {
+        items: card,
+        renderer: showItens,
+      },
+      ".cards-list"
+    );
     section.renderItems();
-
-  }).catch(error => {
-    console.log(`[GET] - /cards - ${error}`);
   })
+  .catch((error) => {
+    console.log(`[GET] - /cards - ${error}`);
+  });
 
 function addNewCard(formData) {
+  apiInst
+    .createCard({
+      isLiked: false,
+      name: formData.local,
+      link: formData.link,
+      owner: ownerId,
+      createdAt: new Date(),
+    })
+    .then((res) => {
+      if (res.status !== 201) {
+        return Promise.reject("Deu erro no create card");
+      }
+      return res.json();
+    })
+    .then((card) => {
+      const newCard = new Card({
+        card: card,
+        templateCard: "#card-template",
+        handleCardClick: "click",
+        handleImageClick: clickImage,
+        handleLike,
+      });
 
-  apiInst.createCard({
-    "isLiked": false,
-    "name": formData.local,
-    "link": formData.link,
-    "owner": ownerId,
-    "createdAt": new Date()
-  }).then(res => {
-    if (res.status !== 201) {
-      return Promise.reject("Deu erro no create card")
-    }
-    return res.json()
-  }).then(card => {
-
-    const newCard = new Card({
-      card: card,
-      templateCard: "#card-template",
-      handleCardClick: "click",
-      handleImageClick: clickImage,
-      handleLike
+      section.addItem(newCard.createCard());
+    })
+    .catch((error) => {
+      console.error(`[POST] - /cards- ${error}`);
     });
-
-    section.addItem(newCard.createCard());
-
-  }).catch(error => {
-    console.error(`[POST] - /cards- ${error}`);
-  })
-
 }
 
 popupWithImage.setEventListeners();
@@ -194,35 +194,30 @@ popupWithImage.setEventListeners();
 const popupWithFormUser = new PopupWithForm({
   popupSelector: ".popup",
   handleFormSubmit: (formData) => {
-    userInfo.setUserInfo(formData);
-
-    apiInst.updateUser(formData)
-      .then(res => {
-        if (res.status !== 200) {
-          return Promise.reject("Deu erro no patch")
+    apiInst
+      .updateUser(formData)
+      .then((res) => {
+        if (!res.ok) {
+          return Promise.reject("Erro ao atualizar usuário");
         }
         return res.json();
-
       })
-      .then(user => {
-
+      .then((user) => {
         userInfo.setUserInfo({
           name: user.name,
           about: user.about,
-          avatar: user.avatar
+          avatar: user.avatar,
         });
       })
-      .catch(error => {
-        console.error(`[GET] - /users/me - ${error}`);
-      })
+      .catch((error) => console.error(`[PATCH] - /users/me - ${error}`));
   },
 });
 
 popupWithFormUser.setEventListeners();
 
 editButton.addEventListener("click", () => {
-  popupWithFormUser.open()
-})
+  popupWithFormUser.open();
+});
 
 // ----- Atualizar o User (nome e sobre) -----
 
@@ -230,17 +225,46 @@ const popupWithFormImage = new PopupWithForm({
   popupSelector: ".addcard",
   handleFormSubmit: (formData) => {
     console.log("Dados do formulário:", formData);
-    addNewCard(formData)
+    addNewCard(formData);
   },
-})
+});
+
+// ----- Atualizar o Avatar -----
+
+const popupWithFormAvatar = new PopupWithForm({
+  popupSelector: ".popupprofilepicture",
+  handleFormSubmit: (formData) => {
+    const avatarUrl = formData["linkprofile-picture"];
+    apiInst
+      .updateAvatar(avatarUrl)
+      .then((res) => {
+        if (!res.ok) {
+          return Promise.reject("Erro ao atualizar o avatar");
+        }
+        return res.json();
+      })
+      .then((user) => {
+        userInfo.setUserInfo({ avatar: user.avatar });
+      })
+      .catch((error) => console.error(`[PATCH] - /users/me/avatar - ${error}`));
+  },
+});
+
+// Adiciona evento para abrir o popup ao clicar no botão de editar avatar
+editProfileButton.addEventListener("click", () => {
+  popupWithFormAvatar.open();
+});
+
+// Ativar eventos do popup
+popupWithFormAvatar.setEventListeners();
 
 // --------- Eventos de Escuta ------------
 
 popupWithFormImage.setEventListeners();
 
 addButton.addEventListener("click", () => {
-  popupWithFormImage.open()
-})
+  popupWithFormImage.open();
+});
 
 addcard.addEventListener("click", (event) => {
   if (event.target === addcard) {
@@ -262,7 +286,6 @@ popup.addEventListener("click", (event) => {
 
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
-
     if (popup.classList.contains("popup_opened")) {
       popup.classList.remove("popup_opened");
     }
@@ -278,8 +301,12 @@ document.addEventListener("keydown", (event) => {
 // --------------- Abrir e Fechar o Popup de Confirmação -------------------
 
 const popupConfirmation = document.querySelector(".popupconfirmation");
-const confirmButton = popupConfirmation.querySelector(".popupconfirmation__button");
-const cancelButton = popupConfirmation.querySelector(".popupconfirmation__close-button");
+const confirmButton = popupConfirmation.querySelector(
+  ".popupconfirmation__button"
+);
+const cancelButton = popupConfirmation.querySelector(
+  ".popupconfirmation__close-button"
+);
 
 // Confirma a exclusão
 confirmButton.addEventListener("click", () => {
@@ -310,28 +337,27 @@ editProfileButton.addEventListener("click", () => {
 });
 
 // Fecha o popup e atualiza a imagem ao clicar no botão de salvar
-saveProfileButton.addEventListener("click", () => {
-  const imageUrl = inputField.value.trim();
+// saveProfileButton.addEventListener("click", () => {
+//   const imageUrl = inputField.value.trim();
 
-  if (imageUrl) {
-    const newImage = new Image();
-    newImage.src = imageUrl;
-    newImage.className = "content__profile-image";
-    newImage.alt = "Nova imagem de perfil";
+//   if (imageUrl) {
+//     const newImage = new Image();
+//     newImage.src = imageUrl;
+//     newImage.className = "content__profile-image";
+//     newImage.alt = "Nova imagem de perfil";
 
-    profileImage.replaceWith(newImage);
+//     profileImage.replaceWith(newImage);
 
-    profilePopup.style.display = "none";
-    inputField.value = "";
-    saveProfileButton.disabled = true;
-  }
-});
+//     profilePopup.style.display = "none";
+//     inputField.value = "";
+//     saveProfileButton.disabled = true;
+//   }
+// });
 
 // Fecha o popup ao clicar no botão de fechar
 closeProfileButton.addEventListener("click", () => {
   profilePopup.style.display = "none";
 });
-
 
 //valida os Forms
 new FormValidator({
@@ -342,8 +368,8 @@ new FormValidator({
     inputErrorClass: "popup__input-error",
     errorClass: "error__message",
   },
-  formSelector: "#user-form"
-}).enableValidation()
+  formSelector: "#user-form",
+}).enableValidation();
 
 new FormValidator({
   config: {
@@ -353,5 +379,5 @@ new FormValidator({
     inputErrorClass: "popup__input-error",
     errorClass: "error__message",
   },
-  formSelector: "#card-form"
-}).enableValidation()
+  formSelector: "#card-form",
+}).enableValidation();

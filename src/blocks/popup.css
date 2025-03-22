@@ -62,7 +62,7 @@
   margin: 0px 36px 0px;
 }
 
-.popup__target{
+.popup__target {
   display: flex;
   flex-direction: column;
   margin-bottom: 30px;
@@ -101,6 +101,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 }
 
 .popup__save-button:hover {
