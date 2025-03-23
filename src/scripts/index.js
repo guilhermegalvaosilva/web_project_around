@@ -88,28 +88,34 @@ function handleLike(cardId, isLiked) {
   return apiInst.removeLike(cardId);
 }
 
-// ------------- Api deletar o cartão do idUser ------------
-
+// Função para excluir o card
 function handleDeleteCard(card, cardElement) {
-  if (card.owner !== ownerId) {
-    console.log("Você não tem permissão para excluir este card.");
-    return;
-  }
-
   const cardId = card._id;
 
+  // Chama a API para excluir o card
   apiInst
     .deleteCard(cardId)
-    .then((res) => {
-      if (res.status !== 204) {
-        return Promise.reject(`Erro no delete do id: ${cardId}`);
-      }
-
+    .then(() => {
+      // Remove o card do DOM após a exclusão bem-sucedida
       cardElement.remove();
+      console.log(`Card com ID ${cardId} excluído com sucesso.`);
     })
     .catch((error) => {
-      console.log(`[DELETE] - /cards - ${error}`);
+      console.error(`Erro ao excluir o card com ID ${cardId}: ${error}`);
     });
+}
+
+// Adiciona o evento de exclusão ao botão de lixeira
+function createCard(cardData) {
+  const cardElement = cardTemplate.cloneNode(true);
+  const cardTrashIcon = cardElement.querySelector(".card__trash-icon");
+
+  // Configura o evento de exclusão
+  cardTrashIcon.addEventListener("click", () => {
+    handleDeleteCard(cardData, cardElement);
+  });
+
+  return cardElement;
 }
 
 let section;
@@ -310,16 +316,39 @@ const cancelButton = popupConfirmation.querySelector(
 
 // Confirma a exclusão
 confirmButton.addEventListener("click", () => {
-  if (window.cardToDelete) {
-    window.cardToDelete.remove();
-    window.cardToDelete = null;
+  if (cardToDelete && cardElementToDelete) {
+    const cardId = cardToDelete._id;
+
+    // Chama a API para excluir o card
+    apiInst
+      .deleteCard(cardId)
+      .then(() => {
+        // Remove o card do DOM após a exclusão bem-sucedida
+        cardElementToDelete.remove();
+        console.log(`Card com ID ${cardId} excluído com sucesso.`);
+      })
+      .catch((error) => {
+        console.error(`Erro ao excluir o card com ID ${cardId}: ${error}`);
+      })
+      .finally(() => {
+        // Fecha o popup de confirmação
+        popupConfirmation.style.display = "none";
+
+        // Limpa as variáveis globais
+        cardToDelete = null;
+        cardElementToDelete = null;
+      });
   }
-  popupConfirmation.style.display = "none";
 });
 
 // Cancela a exclusão
 cancelButton.addEventListener("click", () => {
+  // Fecha o popup de confirmação
   popupConfirmation.style.display = "none";
+
+  // Limpa as variáveis globais
+  cardToDelete = null;
+  cardElementToDelete = null;
 });
 
 // Fecha no ESC
