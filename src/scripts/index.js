@@ -5,6 +5,7 @@ import Popup from "./Popup.js";
 import Userinfo from "./Userinfo.js";
 import PopupWithForm from "./Popupwithform.js";
 import PopupWithImage from "./Popupwithimage.js";
+import Popupwithconfirmation from "./Popupwithconfirmation.js";
 import Api from "./Api.js";
 import {
   popup,
@@ -88,34 +89,24 @@ function handleLike(cardId, isLiked) {
   return apiInst.removeLike(cardId);
 }
 
-// Função para excluir o card
+// ------------- Api deletar o cartão do idUser ------------
+
 function handleDeleteCard(card, cardElement) {
+  if (card.owner !== ownerId) {
+    console.log("Você não tem permissão para excluir este card.");
+    return;
+  }
+
   const cardId = card._id;
 
-  // Chama a API para excluir o card
   apiInst
     .deleteCard(cardId)
     .then(() => {
-      // Remove o card do DOM após a exclusão bem-sucedida
-      cardElement.remove();
-      console.log(`Card com ID ${cardId} excluído com sucesso.`);
+      cardElement.remove(); // Agora remove corretamente
     })
     .catch((error) => {
-      console.error(`Erro ao excluir o card com ID ${cardId}: ${error}`);
+      console.log(`[DELETE] - /cards - ${error}`);
     });
-}
-
-// Adiciona o evento de exclusão ao botão de lixeira
-function createCard(cardData) {
-  const cardElement = cardTemplate.cloneNode(true);
-  const cardTrashIcon = cardElement.querySelector(".card__trash-icon");
-
-  // Configura o evento de exclusão
-  cardTrashIcon.addEventListener("click", () => {
-    handleDeleteCard(cardData, cardElement);
-  });
-
-  return cardElement;
 }
 
 let section;
@@ -128,6 +119,7 @@ function showItens(card) {
     handleCardClick: "handleCardClick",
     handleImageClick: clickImage,
     handleLike,
+    handleDeleteCard,
   });
   cardList.appendChild(newCard.createCard());
 }
@@ -184,6 +176,7 @@ function addNewCard(formData) {
         handleCardClick: "click",
         handleImageClick: clickImage,
         handleLike,
+        handleDeleteCard,
       });
 
       section.addItem(newCard.createCard());
@@ -316,39 +309,25 @@ const cancelButton = popupConfirmation.querySelector(
 
 // Confirma a exclusão
 confirmButton.addEventListener("click", () => {
-  if (cardToDelete && cardElementToDelete) {
-    const cardId = cardToDelete._id;
+  if (window.cardToDelete) {
+    const { card, element } = window.cardToDelete;
 
-    // Chama a API para excluir o card
     apiInst
-      .deleteCard(cardId)
+      .deleteCard(card._id)
       .then(() => {
-        // Remove o card do DOM após a exclusão bem-sucedida
-        cardElementToDelete.remove();
-        console.log(`Card com ID ${cardId} excluído com sucesso.`);
+        if (element) {
+          element.remove();
+        }
+        document.querySelector(".popupconfirmation").style.display = "none";
+        window.cardToDelete = null;
       })
-      .catch((error) => {
-        console.error(`Erro ao excluir o card com ID ${cardId}: ${error}`);
-      })
-      .finally(() => {
-        // Fecha o popup de confirmação
-        popupConfirmation.style.display = "none";
-
-        // Limpa as variáveis globais
-        cardToDelete = null;
-        cardElementToDelete = null;
-      });
+      .catch((error) => console.error("Erro ao deletar card:", error));
   }
 });
 
 // Cancela a exclusão
 cancelButton.addEventListener("click", () => {
-  // Fecha o popup de confirmação
   popupConfirmation.style.display = "none";
-
-  // Limpa as variáveis globais
-  cardToDelete = null;
-  cardElementToDelete = null;
 });
 
 // Fecha no ESC
@@ -364,24 +343,6 @@ document.addEventListener("keydown", (event) => {
 editProfileButton.addEventListener("click", () => {
   profilePopup.style.display = "flex";
 });
-
-// Fecha o popup e atualiza a imagem ao clicar no botão de salvar
-// saveProfileButton.addEventListener("click", () => {
-//   const imageUrl = inputField.value.trim();
-
-//   if (imageUrl) {
-//     const newImage = new Image();
-//     newImage.src = imageUrl;
-//     newImage.className = "content__profile-image";
-//     newImage.alt = "Nova imagem de perfil";
-
-//     profileImage.replaceWith(newImage);
-
-//     profilePopup.style.display = "none";
-//     inputField.value = "";
-//     saveProfileButton.disabled = true;
-//   }
-// });
 
 // Fecha o popup ao clicar no botão de fechar
 closeProfileButton.addEventListener("click", () => {
